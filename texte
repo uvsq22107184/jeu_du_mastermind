@@ -1,0 +1,9 @@
+ Ce programme est une implémentation du jeu Mastermind en Python avec une interface graphique utilisant la bibliothèque Tkinter.
+
+La classe Mastermind gère le jeu lui-même, en générant une combinaison aléatoire de quatre chiffres et en vérifiant les propositions des joueurs. Elle stocke également les propositions précédentes pour permettre aux joueurs de voir leur historique de propositions.
+
+La classe MastermindGUI est responsable de la création de l'interface graphique à l'aide de Tkinter. Elle crée une fenêtre et des éléments graphiques tels que des étiquettes, des champs de saisie et des boutons. Les boutons sont associés à des méthodes de la classe MastermindGUI qui appellent les méthodes correspondantes de la classe Mastermind. Par exemple, le bouton "Proposer" appelle la méthode verifier_proposition() de la classe Mastermind et affiche le résultat correspondant dans l'interface graphique.
+
+La méthode demarrer() de la classe MastermindGUI démarre la boucle principale de l'interface graphique à l'aide de la méthode mainloop() de Tkinter. Lorsque cette méthode est appelée, la fenêtre est créée et le programme attend les interactions de l'utilisateur.
+
+En résumé, ce programme combine les fonctionnalités du jeu Mastermind avec une interface graphique intuitive pour une expérience utilisateur plus agréable.
