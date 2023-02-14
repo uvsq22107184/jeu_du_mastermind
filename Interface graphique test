@@ -1,0 +1,66 @@
+import random
+import tkinter as tk
+
+class Mastermind:
+    def __init__(self):
+        self.combinaison = [random.randint(0, 9) for _ in range(4)]
+        self.propositions = []
+        
+    def verifier_proposition(self, proposition):
+        if not proposition.isdigit() or len(proposition) != 4:
+            return None
+        proposition = [int(chiffre) for chiffre in proposition]
+        bien_places = sum([1 for i in range(4) if proposition[i] == self.combinaison[i]])
+        present = sum([1 for chiffre in proposition if chiffre in self.combinaison])
+        mal_places = present - bien_places
+        resultat = '{} bien placé(s), {} mal placé(s)'.format(bien_places, mal_places)
+        self.propositions.append(proposition)
+        return resultat
+
+    def nouvelle_partie(self):
+        self.combinaison = [random.randint(0, 9) for _ in range(4)]
+        self.propositions = []
+
+class MastermindGUI:
+    def __init__(self, mastermind):
+        self.mastermind = mastermind
+        self.fenetre = tk.Tk()
+        self.fenetre.title('Mastermind')
+        self.instructions = tk.Label(self.fenetre, text='Proposez une combinaison de 4 chiffres')
+        self.instructions.pack()
+        self.proposition_label = tk.Label(self.fenetre, text='Proposition :')
+        self.proposition_label.pack()
+        self.proposition_entree = tk.Entry(self.fenetre, width=4)
+        self.proposition_entree.pack()
+        self.resultat_label = tk.Label(self.fenetre, text='Résultat :')
+        self.resultat_label.pack()
+        self.resultat_texte = tk.Label(self.fenetre, text='')
+        self.resultat_texte.pack()
+        self.proposer_bouton = tk.Button(self.fenetre, text='Proposer', command=self.proposer)
+        self.proposer_bouton.pack()
+        self.recommencer_bouton = tk.Button(self.fenetre, text='Recommencer', command=self.recommencer)
+        self.recommencer_bouton.pack()
+        self.quitter_bouton = tk.Button(self.fenetre, text='Quitter', command=self.fenetre.destroy)
+        self.quitter_bouton.pack()
+
+    def proposer(self):
+        proposition = self.proposition_entree.get()
+        resultat = self.mastermind.verifier_proposition(proposition)
+        if resultat is not None:
+            self.resultat_texte.config(text=resultat)
+            if proposition == ''.join(map(str, self.mastermind.combinaison)):
+                self.instructions.config(text='Félicitations, vous avez trouvé la combinaison !')
+        self.proposition_entree.delete(0, tk.END)
+
+    def recommencer(self):
+        self.mastermind.nouvelle_partie()
+        self.resultat_texte.config(text='')
+        self.instructions.config(text='Proposez une combinaison de 4 chiffres')
+
+    def demarrer(self):
+        self.fenetre.mainloop()
+
+if __name__ == '__main__':
+    mastermind = Mastermind()
+    gui = MastermindGUI(mastermind)
+    gui.demarrer()
