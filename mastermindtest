@@ -1,0 +1,51 @@
+import random
+
+# Génère une combinaison aléatoire de n chiffres
+def generer_combinaison(n):
+    chiffres = ['1', '2', '3', '4', '5', '6']
+    combinaison = ''
+    for i in range(n):
+        chiffre = random.choice(chiffres)
+        combinaison += chiffre
+    return combinaison
+
+# Calcule le nombre de chiffres bien placés
+def bien_places(combinaison, proposition):
+    bien_places = 0
+    for i in range(len(combinaison)):
+        if combinaison[i] == proposition[i]:
+            bien_places += 1
+    return bien_places
+
+# Calcule le nombre de chiffres présents mais mal placés
+def mal_places(combinaison, proposition):
+    mal_places = 0
+    for chiffre in set(proposition):
+        mal_places += min(proposition.count(chiffre), combinaison.count(chiffre))
+    mal_places -= bien_places(combinaison, proposition)
+    return mal_places
+
+# Boucle principale du jeu
+def jouer():
+    n = 4 # longueur de la combinaison
+    combinaison = generer_combinaison(n)
+    print("Bienvenue dans Mastermind !\n")
+    print("Trouvez la combinaison de %d chiffres." % n)
+    print("Les chiffres sont compris entre 1 et 6.")
+    coups = 0
+    while True:
+        coups += 1
+        proposition = input("Proposition : ")
+        if len(proposition) != n or not all(chiffre in '123456' for chiffre in proposition):
+            print("Proposition invalide. Veuillez entrer %d chiffres compris entre 1 et 6." % n)
+            continue
+        bien = bien_places(combinaison, proposition)
+        mal = mal_places(combinaison, proposition)
+        print("Bien placés : %d" % bien)
+        print("Mal placés : %d" % mal)
+        if bien == n:
+            print("Bravo, vous avez trouvé la combinaison en %d coups !" % coups)
+            break
+
+# Lancer le jeu
+jouer()
